@@ -61,6 +61,26 @@ public partial class ExportWizardLanding : Page
         _ = ExportHelper.ExportToFile(Context, Window.GetWindow(this));
     }
 
+    private void UploadButton_Click(object sender, RoutedEventArgs e)
+    {
+        // select everything
+        foreach (ExportPlayerSelectItem playerSelect in Context.Players)
+        {
+            playerSelect.Checked = true;
+        }
+
+        foreach (ExportAttributeSelectItem attributeSelect in Context.Attributes)
+        {
+            attributeSelect.Checked = true;
+        }
+
+        Context.IncludeMatchDuration = true;
+        Context.IncludeMatchID = true;
+        Context.IncludePatchVersion = true;
+
+        _ = ExportHelper.ExportToFileNUpload(Context, Window.GetWindow(this));
+    }
+
     private async void PresetButton_Click(object sender, RoutedEventArgs e)
     {
         // create an initial preset, it is probably empty

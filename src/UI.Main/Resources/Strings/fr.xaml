@@ -385,6 +385,7 @@
     <string:String x:Key="ErdLandingPreset">Exportation à l'aide d'un préréglage</string:String>
     <string:String x:Key="ErdLandingAdvanced">Afficher le mode avancé</string:String>
     <string:String x:Key="ErdLandingEverything">Exporter tout</string:String>
+    <string:String x:Key="ErdLandingUpload">Exporter tout</string:String>
     <string:String x:Key="ErdPlayersSubtitle">Sélectionner les joueurs à inclure</string:String>
     <string:String x:Key="ErdPlayersManual">Sélection manuelle</string:String>
     <string:String x:Key="ErdPlayersMarkers">Joueurs avec des marqueurs</string:String>

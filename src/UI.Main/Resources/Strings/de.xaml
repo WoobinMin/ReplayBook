@@ -322,6 +322,7 @@
     <string:String x:Key="ErdLandingPreset">Exportiere mit Vorlage</string:String>
     <string:String x:Key="ErdLandingAdvanced">Zeige erweiterten Modus</string:String>
     <string:String x:Key="ErdLandingEverything">Exportiere alles</string:String>
+    <string:String x:Key="ErdLandingUpload">Exporter tout</string:String>
     <string:String x:Key="ErdPlayersSubtitle">Wähle Spieler für den Export</string:String>
     <string:String x:Key="ErdPlayersManual">Manuelle Auswahl</string:String>
     <string:String x:Key="ErdPlayersMarkers">Spiele mit Markierungen</string:String>

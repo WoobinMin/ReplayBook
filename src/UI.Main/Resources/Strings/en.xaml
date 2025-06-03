@@ -386,6 +386,7 @@
     <string:String x:Key="ErdLandingPreset">Export using preset</string:String>
     <string:String x:Key="ErdLandingAdvanced">Show advanced mode</string:String>
     <string:String x:Key="ErdLandingEverything">Export everything</string:String>
+    <string:String x:Key="ErdLandingUpload">Export with upload</string:String>
     <string:String x:Key="ErdPlayersSubtitle">Select players to include</string:String>
     <string:String x:Key="ErdPlayersManual">Manual selection</string:String>
     <string:String x:Key="ErdPlayersMarkers">Players with markers</string:String>

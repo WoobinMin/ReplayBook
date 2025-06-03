@@ -378,6 +378,7 @@
     <string:String x:Key="ErdLandingPreset">Экспорт с использованием предустановки</string:String>
     <string:String x:Key="ErdLandingAdvanced">Показать расширенный режим</string:String>
     <string:String x:Key="ErdLandingEverything">Экспортировать всё</string:String>
+    <string:String x:Key="ErdLandingUpload">Exporter tout</string:String>
     <string:String x:Key="ErdPlayersSubtitle">Выберите игроков для включения</string:String>
     <string:String x:Key="ErdPlayersManual">Выбор вручную</string:String>
     <string:String x:Key="ErdPlayersMarkers">Игроки с маркерами</string:String>
