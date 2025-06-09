@@ -22,6 +22,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Fraxiinus.ReplayBook.UI.Main.Utilities;
 public static class ExportHelper
@@ -32,7 +33,9 @@ public static class ExportHelper
     {
         if (isFirebaseInitialized) return;
 
-        string credentialPath = @"D:\firebase\scrimdata-service-account.json";
+        var credentialPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scrimdata-60eb9-firebase-adminsdk-fbsvc-549c00571c.json");
+        // 🔥 자격증명 환경변수 강제 등록
+        Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialPath);
 
         FirebaseApp.Create(new AppOptions()
         {
@@ -41,6 +44,7 @@ public static class ExportHelper
 
         isFirebaseInitialized = true;
     }
+
 
     private static readonly string _presetPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cache", "export_presets");
 
@@ -109,11 +113,28 @@ public static class ExportHelper
     {
         try
         {
-
             string results = await ConstructExportString(context);
-
             string documentId = GenerateHash(results);
-            await UploadToFirebaseAsync(documentId, results);
+
+            // Firebase 초기화
+            InitializeFirebase();
+
+            // Firestore 인스턴스 생성
+            FirestoreDb db = FirestoreDb.Create("scrimdata-60eb9");
+            DocumentReference docRef = db.Collection("scrimData").Document(documentId);
+
+            // 문서 존재 여부 확인
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+            if (snapshot.Exists)
+            {
+                MessageBox.Show("⚠️ 해당 데이터는 이미 업로드되어 있습니다.\n(중복 업로드 차단)", "중복 데이터", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            // 문서가 없다면 업로드 진행
+            using var doc = JsonDocument.Parse(results);
+            var parsed = ConvertToDictionary(doc.RootElement);
+            await docRef.SetAsync(parsed);
 
             MessageBox.Show("✅ Firebase 업로드 완료!", "업로드 성공", MessageBoxButton.OK, MessageBoxImage.Information);
             return true;
@@ -127,19 +148,10 @@ public static class ExportHelper
 
 
 
+
     private static async Task UploadToFirebaseAsync(string matchId, string jsonData)
     {
-        string credentialPath = @"D:\firebase\scrimdata-60eb9-firebase-adminsdk-fbsvc-d6d6271c53.json";
-
-        if (!FirebaseApp.DefaultInstance?.Name?.Equals("DEFAULT") ?? true)
-        {
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credentialPath);
-
-            FirebaseApp.Create(new AppOptions()
-            {
-                Credential = Google.Apis.Auth.OAuth2.GoogleCredential.FromFile(credentialPath)
-            });
-        }
+        InitializeFirebase();
 
         FirestoreDb db = FirestoreDb.Create("scrimdata-60eb9");
         DocumentReference docRef = db.Collection("scrimData").Document(matchId);
@@ -148,8 +160,8 @@ public static class ExportHelper
         var parsed = ConvertToDictionary(doc.RootElement);
 
         await docRef.SetAsync(parsed);
-
     }
+
 
     private static object ConvertToDictionary(JsonElement element)
     {
